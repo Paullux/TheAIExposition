@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: #020214;
+    color: bisque;
+    scroll-behavior: smooth;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Pour s'assurer que le canvas se trouve derrière tout le contenu de la page */
+}
+
+#mediaContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%; /* Utilisez max-width pour limiter la taille */
+    max-height: 90vh; /* Limite la hauteur à 90% de la hauteur de la fenêtre */
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#closeMedia {
+    color: white;
+    font-size: 30px;
+    padding: 0 15px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+#mediaContent {
+    width: 100%; /* Prend toute la largeur du conteneur */
+    height: auto; /* Hauteur automatique pour maintenir le ratio d'aspect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mediaContent img,
+#mediaContent video {
+    max-width: 100%; /* Limite la taille du média à celle du conteneur */
+    max-height: 80vh; /* Limite la hauteur pour laisser de l'espace au bouton de fermeture */
+    object-fit: contain; /* Maintient le ratio d'aspect sans tronquer */
+}
+
