@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
 html {
     background-color: #020214;
     color: bisque;
@@ -19,7 +23,15 @@ canvas {
     z-index: -1; /* Pour s'assurer que le canvas se trouve derrière tout le contenu de la page */
 }
 
+header {
+    text-align: center;
+    font-size: 64px;
+    font-weight: 800;
+}
+
 #mediaContainer {
+    visibility: hidden;
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -38,6 +50,7 @@ canvas {
 }
 
 #closeMedia {
+    display: none;
     color: white;
     font-size: 30px;
     padding: 0 15px;

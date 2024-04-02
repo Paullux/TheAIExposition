@@ -1,79 +1,3 @@
-// //------------------------ThreeJS------------------------
-// import * as THREE from "./three.module.min.js";
-// import { MTLLoader } from "./MTLLoader.js";
-// import { OBJLoader } from "./OBJLoader.js";
-// import { PointerLockControls } from './PointerLockControls.js';
-
-// const scene = new THREE.Scene();
-// const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-// const renderer = new THREE.WebGLRenderer({ alpha: true });
-// renderer.setClearColor(0x000000, 0);
-// renderer.setSize(window.innerWidth, window.innerHeight);
-// document.body.appendChild(renderer.domElement);
-
-// const manager = new THREE.LoadingManager();
-// new MTLLoader(manager).load('public/assets/Models3D/Cube.mtl', (materialCreator) => {
-//     materialCreator.preload();
-//     const materials = Object.values(materialCreator.materials);
-
-//     new OBJLoader(manager)
-//         .setMaterials(materialCreator)
-//         .load('public/assets/Models3D/Cube.obj', (object) => {
-//             object.traverse((child) => {
-//                 if (child instanceof THREE.Mesh) {
-//                     // Ici, assurez-vous que le matériau du child est bien défini
-//                     if (child.material && !(child.material instanceof THREE.MeshBasicMaterial)) {
-//                         const basicMaterial = new THREE.MeshBasicMaterial({
-//                             color: child.material.color,
-//                             map: child.material.map
-//                         });
-//                         child.material = basicMaterial;
-//                     }
-//                 }
-//             });
-//             scene.add(object);
-//         });
-// });
-
-// // PointLight qui suit la caméra
-// const flashlight = new THREE.PointLight(0xffffff, 0.5, 100);
-// flashlight.position.set(0, 1, 1); // Position relative à la caméra
-// camera.add(flashlight); // Ajoute la lumière à la caméra pour qu'elle suive le mouvement de la caméra
-// scene.add(camera); // Ajoute la caméra et la lumière à la scène
-
-// // Lumière ambiante pour un éclairage uniforme
-// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Intensité réglable selon les besoins
-// scene.add(ambientLight);
-
-// // Lumière hémisphérique pour simuler une lumière naturelle diffuse
-// const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x000000, 0.5); // Ciel, sol, intensité
-// scene.add(hemisphereLight);
-
-// // Assurez-vous que la caméra commence au-dessus du sol de la cage
-// camera.position.set(0, 5, 0);
-
-// const controls = new PointerLockControls(camera, renderer.domElement);
-// document.body.addEventListener('click', () => {
-//     controls.lock();
-// });
-
-// function onWindowResize() {
-//     camera.aspect = window.innerWidth / window.innerHeight;
-//     camera.updateProjectionMatrix();
-//     renderer.setSize(window.innerWidth, window.innerHeight);
-// }
-
-// window.addEventListener('resize', onWindowResize, false);
-
-// function animate() {
-//     requestAnimationFrame(animate);
-//     renderer.render(scene, camera);
-// }
-
-// animate();
-
-
-
 //------------------------ThreeJS------------------------
 import * as THREE from "./three.module.min.js";
 import { MTLLoader } from "./MTLLoader.js";
@@ -83,16 +7,11 @@ import { PointerLockControls } from './PointerLockControls.js';
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 5, 0);
-let mediaType= "";
-let mediaSource= "";
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 let lastIntersectedObjectName = "";
-
-let lastCameraPosition = new THREE.Vector3();
-let lastCameraQuaternion = new THREE.Quaternion();
 
 // Création d'un groupe pour tous les objets 3D chargés
 let loadedObjectsGroup = new THREE.Group();
@@ -105,7 +24,7 @@ scene.add(controls.getObject());
 // Créer un sprite pour le pointeur central
 const textureLoader = new THREE.TextureLoader();
 const particleTexture = textureLoader.load('public/assets/images/particlesTexture.png');
-const spriteMaterial = new THREE.SpriteMaterial({ map: particleTexture });
+const spriteMaterial = new THREE.SpriteMaterial({ map: particleTexture, color: 0xffffff });
 const sprite = new THREE.Sprite(spriteMaterial);
 sprite.scale.set(0.015, 0.015, 0.015); // Taille du sprite
 sprite.position.set(0, 0, -0.5);
@@ -200,8 +119,10 @@ function displayMedia(intersectedObjectName) {
 
     const mediaContainer = document.getElementById('mediaContainer');
     const mediaContent = document.getElementById('mediaContent');
+    const closeMedia = document.getElementById('closeMedia');
+    mediaContainer.style.visibility= "visible";
     mediaContainer.style.display = 'flex'; // Affiche le conteneur
-
+    closeMedia.style.display = 'block';
     // Supprimez tout contenu précédent
     mediaContent.innerHTML = '';
 
@@ -239,8 +160,11 @@ function displayMedia(intersectedObjectName) {
 // Gestion de la fermeture du média
 document.getElementById('closeMedia').addEventListener('click', () => {
     const mediaContainer = document.getElementById('mediaContainer');
-    mediaContainer.style.display = 'none'; // Masque le conteneur
-    clearCurrentMedia();
+    clearCurrentMedia();  // Fonction pour nettoyer et retirer le média du conteneur
+    mediaContainer.style.display = 'none';
+    mediaContainer.style.visibility= "hidden";
+    const closeMedia = document.getElementById('closeMedia');
+    closeMedia.style.display = 'none';
     controls.lock(); // Re-active les contrôles de la caméra
 });
 
